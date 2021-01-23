@@ -20,11 +20,6 @@ with open(csvpath) as csvfile:
     #Part2
     total = sum(int(row[1]) for row in data)
 
-print("Financial Analysis")
-print("------------------------------")
-print("Total Months:" + str(months))
-print("Total: " + str(total))
-
 #Create empty list
 ls = []
 
@@ -49,6 +44,28 @@ mini = min(new_ls)
 maxi = max(new_ls)
 aver = round(Average(new_ls), 2)
 
-print("Minimum: " + str(mini))
-print("Maximum: " + str(maxi))
+print("Financial Analysis")
+print("------------------------------")
+print("Total Months:" + str(months))
+print("Total: " + str(total))
 print("Average: " + str(aver))
+print("Greatest Increase in Profits: : " + str(maxi))
+print("Greatest Decrease in Profits: : " + str(mini))
+
+# Open the file using "write" mode. Specify the variable to hold the contents
+file1 = open("Analysis\output.txt","a") 
+file1.truncate(0)
+file1.write("Financial Analysis")
+file1.write("\n")
+file1.write("-------------------")
+file1.write("\n")
+file1.write("Total Months: " + str(months))
+file1.write("\n")
+file1.write("Total: " + str(total))
+file1.write("\n")
+file1.write("Average: " + str(aver))
+file1.write("\n")
+file1.write("Greatest Increase in Profits: " + str(maxi))
+file1.write("\n")
+file1.write("Greatest Decrease in Profits: " + str(mini))
+file1.close() 
