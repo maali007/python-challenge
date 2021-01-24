@@ -1,12 +1,12 @@
-# First we'll import the os module
-# This will allow us to create file paths across operating systems
+# Import the os module, csv module and itertools modules
 import os
-
-# Module for reading CSV files
 import csv
 import itertools
+
+# Set file path
 csvpath = os.path.join('Resources', 'budget_data.csv')
 
+# Open the csv file
 with open(csvpath) as csvfile:
 
     # CSV reader specifies delimiter and variable that holds contents
@@ -14,35 +14,35 @@ with open(csvpath) as csvfile:
     next(csvreader, None)  # skip the headers
     data = list(csvreader)
     
-    #Part 1
-    months = len(data)
+#The total number of months included in the dataset
+months = len(data)
     
-    #Part2
-    total = sum(int(row[1]) for row in data)
+# Determine the net total amount of "Profit/Losses" over the entire period
+total = sum(int(row[1]) for row in data)
 
-#Create empty list
-ls = []
+# Create empty list to hold Profit/Loss values
+pll = []
 
-#loop csv column 2 [1] and append values as integers to ls 
+#loop csv column 2 and append values as integers to pll 
 for i in data:
-    ls.append(int(i[1]))
+    pll.append(int(i[1]))
 
 #Create new list for differences
-new_ls = []
+plld = []
 
-#Loop through ls items 2 to last item subtracting items in row i from items in row i+1
+#Loop through pll items 2 to last item subtracting items in row i from items in row i+1
 #append to this new list 
-for i in range(len(ls) - 1):
-    new_ls.append(ls[i + 1] - ls[i])
+for i in range(len(pll) - 1):
+    plld.append(pll[i + 1] - pll[i])
 
 #Defining average function
-def Average(new_ls):
-    return sum(new_ls) / len(new_ls)
+def Average(plld):
+    return sum(plld) / len(plld)
 
 #Getting minimum, maximum, and average of differences into variables
-mini = min(new_ls)
-maxi = max(new_ls)
-aver = round(Average(new_ls), 2)
+mini = min(plld)
+maxi = max(plld)
+aver = round(Average(plld), 2)
 
 print("Financial Analysis")
 print("------------------------------")
