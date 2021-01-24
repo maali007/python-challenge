@@ -5,7 +5,10 @@ import os
 # Module for reading CSV files
 import csv
 import itertools
-csvpath = os.path.join('Resources', 'budget_data.csv')
+
+from collections import Counter
+
+csvpath = os.path.join('Resources', 'election_data.csv')
 
 with open(csvpath) as csvfile:
 
@@ -14,58 +17,54 @@ with open(csvpath) as csvfile:
     next(csvreader, None)  # skip the headers
     data = list(csvreader)
     
-    #Part 1
-    months = len(data)
-    
-    #Part2
-    total = sum(int(row[1]) for row in data)
 
+    #Part 1
+    votes = len(data)
+    print("Total Votes:" + str(votes))
+    
+ 
 #Create empty list
-ls = []
+list1 = []
 
 #loop csv column 2 [1] and append values as integers to ls 
 for i in data:
-    ls.append(int(i[1]))
+    list1.append(i[2])
 
-#Create new list for differences
-new_ls = []
+candidates = []
+for x in list1:
+    if x not in candidates:
+        candidates.append(x)
+#print(candidates)
 
-#Loop through ls items 2 to last item subtracting items in row i from items in row i+1
-#append to this new list 
-for i in range(len(ls) - 1):
-    new_ls.append(ls[i + 1] - ls[i])
+counts = Counter(list1)
+#print(counts)
 
-#Defining average function
-def Average(new_ls):
-    return sum(new_ls) / len(new_ls)
+#print(len(candidates[0]))
+for x in range(len(candidates)): 
+    #print(candidates[x] + ":")
 
-#Getting minimum, maximum, and average of differences into variables
-mini = min(new_ls)
-maxi = max(new_ls)
-aver = round(Average(new_ls), 2)
 
-print("Financial Analysis")
-print("------------------------------")
-print("Total Months:" + str(months))
-print("Total: " + str(total))
-print("Average: " + str(aver))
-print("Greatest Increase in Profits: : " + str(maxi))
-print("Greatest Decrease in Profits: : " + str(mini))
+    totalz = sum(counts.values())
+    percent = {key: value/totalz for key, value in counts.items()}
+#print(percent)
 
-# Open the file using "write" mode. Specify the variable to hold the contents
-file1 = open("Analysis\output.txt","a") 
-file1.truncate(0)
-file1.write("Financial Analysis")
-file1.write("\n")
-file1.write("-------------------")
-file1.write("\n")
-file1.write("Total Months: " + str(months))
-file1.write("\n")
-file1.write("Total: " + str(total))
-file1.write("\n")
-file1.write("Average: " + str(aver))
-file1.write("\n")
-file1.write("Greatest Increase in Profits: " + str(maxi))
-file1.write("\n")
-file1.write("Greatest Decrease in Profits: " + str(mini))
-file1.close() 
+# convert to list
+#percent_list = [percent.get(str(i), 0.000) for i in range(len(candidates))]
+#print(percent_list)
+
+
+vc = list(counts.values())
+vp = list(percent.values())
+
+#nlist = []
+#for i in range(len(candidates)):
+ #   print(candidates[0] + str(vc[0]) + str(vp[0]))
+
+#nlist = [candidates, vc, vp]
+#print(nlist)
+
+
+for (a, b, c) in zip(candidates, vc, vp): 
+     print (a + ": ","{:.3%}".format(c), "(" + str(b) + ")") 
+
+     
