@@ -1,15 +1,16 @@
-# First we'll import the os module
-# This will allow us to create file paths across operating systems
+# Import the os module, csv module and itertools modules
 import os
-
-# Module for reading CSV files
 import csv
 import itertools
+import sys
 
+# Import Counter from collections module
 from collections import Counter
 
-csvpath = os.path.join('Resources', 'election_data.csv')
+# Set file path
+csvpath = os.path.join('Resources', 'Test.csv')
 
+# Open the csv file
 with open(csvpath) as csvfile:
 
     # CSV reader specifies delimiter and variable that holds contents
@@ -17,54 +18,97 @@ with open(csvpath) as csvfile:
     next(csvreader, None)  # skip the headers
     data = list(csvreader)
     
-
-    #Part 1
+    # Determine total number of votes cast
     votes = len(data)
+    print("Election Results")
+    print("------------------")
     print("Total Votes:" + str(votes))
+    print("------------------")
     
  
-#Create empty list
-list1 = []
+# Create empty list to hold all the candidates chosen in the votes
+selectedcandidates = []
 
-#loop csv column 2 [1] and append values as integers to ls 
+# Loop through csv column with candidate names and append values to selectedcandidate list 
 for i in data:
-    list1.append(i[2])
+    selectedcandidates.append(i[2])
 
+# Create an empty list to hold unique candidate names from the selectedcandidates list
 candidates = []
-for x in list1:
+
+# Loop through selectedcandidate list and add any name thats missing from the candidates list to the candidates list
+for x in selectedcandidates:
     if x not in candidates:
         candidates.append(x)
-#print(candidates)
 
-counts = Counter(list1)
-#print(counts)
+# Determine number of votes for each unique candidate (creates a dictionary)
+counts = Counter(selectedcandidates)
+print(counts)
 
-#print(len(candidates[0]))
-for x in range(len(candidates)): 
-    #print(candidates[x] + ":")
+# Get total votes cast again. Could use votes from line 21 but wated to try something else
+combinedvotes = sum(counts.values())
 
+# Create dictionary of candidate and vote count
+percent = {key: value/combinedvotes for key, value in counts.items()}
 
-    totalz = sum(counts.values())
-    percent = {key: value/totalz for key, value in counts.items()}
-#print(percent)
-
-# convert to list
-#percent_list = [percent.get(str(i), 0.000) for i in range(len(candidates))]
-#print(percent_list)
-
-
+# Create lists of the votes per candidate and their respective percentages
 vc = list(counts.values())
 vp = list(percent.values())
 
-#nlist = []
-#for i in range(len(candidates)):
- #   print(candidates[0] + str(vc[0]) + str(vp[0]))
+# Loop through the candidates, votes per candidate (vc) and percentages (vp) and extract items to concatenate in a print statement
 
-#nlist = [candidates, vc, vp]
-#print(nlist)
-
-
+nd = {}
 for (a, b, c) in zip(candidates, vc, vp): 
-     print (a + ": ","{:.3%}".format(c), "(" + str(b) + ")") 
+    nd.update({b:a})
+    #print(nd)
+    print(a + ": ","{:.3%}".format(c), "(" + str(b) + ")")
 
-     
+print("------------------")
+
+# I know Khan is the winner from the counts dictionary and is first item in candidates list so I'll just set the range to 1 in the loop below.
+# Sorting descending would also work. 
+hc = max(counts.values())
+print(nd[hc])
+
+
+# for x in range(1): 
+#     print("Winner: " + candidates[x])
+# print("------------------")
+
+#Write results to .txt file in Analysis folder
+file1 = open("Analysis\output.txt","a") 
+file1.truncate(0)
+file1.write("Election Results")
+file1.write("\n")
+file1.write("-------------------")
+file1.write("\n")
+file1.write("Total Votes: " + str(votes))
+file1.write("\n")
+file1.write("-------------------")
+file1.write("\n")
+for i in range(len(candidates)):
+    file1.write(str(candidates[i]) + ": " + "{:.3%}".format(vp[i]) + "(" + str(vc[i]) + ")")
+    file1.write("\n")
+file1.write("-------------------")
+file1.write("\n")
+#file1.write("Winner: " + candidates[0])
+file1.write("Winner: " + nd[hc])
+file1.write("\n")
+file1.write("-------------------")
+file1.close()      
+
+# sys.stdout = open('output.txt','wt')
+# print("Election Results")
+# print("------------------")
+# print("Total Votes:" + str(votes))
+# print("------------------")
+# print(mainresult)
+# print("------------------")
+# print("Winner: " + candidates[x])
+# print("------------------")
+
+
+# outF = open("myOutFile.txt", "w")
+#   outF.write(line)
+#   outF.write("\n")
+# outF.close()
