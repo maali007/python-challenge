@@ -8,7 +8,7 @@ import sys
 from collections import Counter
 
 # Set file path
-csvpath = os.path.join('Resources', 'Test.csv')
+csvpath = os.path.join('Resources', 'election_data.csv')
 
 # Open the csv file
 with open(csvpath) as csvfile:
@@ -43,7 +43,6 @@ for x in selectedcandidates:
 
 # Determine number of votes for each unique candidate (creates a dictionary)
 counts = Counter(selectedcandidates)
-print(counts)
 
 # Get total votes cast again. Could use votes from line 21 but wated to try something else
 combinedvotes = sum(counts.values())
@@ -55,9 +54,10 @@ percent = {key: value/combinedvotes for key, value in counts.items()}
 vc = list(counts.values())
 vp = list(percent.values())
 
-# Loop through the candidates, votes per candidate (vc) and percentages (vp) and extract items to concatenate in a print statement
-
+# Create new dictionary (nd) where the key is set as the vote count and the value as the corresponding candidate. This will be useful in printing out the winners name.
 nd = {}
+
+# Loop through the candidates, votes per candidate (vc) and percentages (vp) and extract items to concatenate in a print statement
 for (a, b, c) in zip(candidates, vc, vp): 
     nd.update({b:a})
     #print(nd)
@@ -65,15 +65,10 @@ for (a, b, c) in zip(candidates, vc, vp):
 
 print("------------------")
 
-# I know Khan is the winner from the counts dictionary and is first item in candidates list so I'll just set the range to 1 in the loop below.
-# Sorting descending would also work. 
+# Highest candidate's name (hc) is the value whose key is the highest count in the new dictionary (nd).
 hc = max(counts.values())
-print(nd[hc])
+print("Winner: " + nd[hc])
 
-
-# for x in range(1): 
-#     print("Winner: " + candidates[x])
-# print("------------------")
 
 #Write results to .txt file in Analysis folder
 file1 = open("Analysis\output.txt","a") 
@@ -86,29 +81,14 @@ file1.write("Total Votes: " + str(votes))
 file1.write("\n")
 file1.write("-------------------")
 file1.write("\n")
+
+# Looping through the candidates, vote oercent and vote count lists to get be able to print out each candidates name, vote percent and vote count.
 for i in range(len(candidates)):
     file1.write(str(candidates[i]) + ": " + "{:.3%}".format(vp[i]) + "(" + str(vc[i]) + ")")
     file1.write("\n")
 file1.write("-------------------")
 file1.write("\n")
-#file1.write("Winner: " + candidates[0])
 file1.write("Winner: " + nd[hc])
 file1.write("\n")
 file1.write("-------------------")
 file1.close()      
-
-# sys.stdout = open('output.txt','wt')
-# print("Election Results")
-# print("------------------")
-# print("Total Votes:" + str(votes))
-# print("------------------")
-# print(mainresult)
-# print("------------------")
-# print("Winner: " + candidates[x])
-# print("------------------")
-
-
-# outF = open("myOutFile.txt", "w")
-#   outF.write(line)
-#   outF.write("\n")
-# outF.close()
