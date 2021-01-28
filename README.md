@@ -14,7 +14,7 @@ CHALLENGE 2: PYPOLL
 		1. Total number of votes as the lists length.
 		2. Vote percentage and count per candidate by creating a list of the candidates and extracting unique candidate names to whose counts and percentages were then determined.
 		3. The candidate with the highest vote by creating a dictionary whose key was the counts and value the candidate. From this dictionary, I determined the highest count (key) and reported it's associated value.
-		4. Printed these results to the terminal and text document.value and 
+		4. Printed these results to the terminal and text document.
+		NB: The elections_data.csv was too large and had to have it zipped to upload. Requires unzipping for code to work. Could probably have figured out how to read in data from a zipped file but didn't want to mess with my code as it's working. Thank you!
 		
-		PS: The elections_data.csv was too large and had to have it zipped to upload. Requires unzipping for code to work. Could probably have figured out how to read in data from a zipped file but didn't want to mess with my code as it's working. Thank you!
-	
+		
