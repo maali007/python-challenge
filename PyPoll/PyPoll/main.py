@@ -2,6 +2,7 @@
 import os
 import csv
 import itertools
+import sys
 
 # Import Counter from collections module
 from collections import Counter
@@ -53,18 +54,23 @@ percent = {key: value/combinedvotes for key, value in counts.items()}
 vc = list(counts.values())
 vp = list(percent.values())
 
+# Create new dictionary (nd) where the key is set as the vote count and the value as the corresponding candidate. This will be useful in printing out the winners name.
+nd = {}
+
 # Loop through the candidates, votes per candidate (vc) and percentages (vp) and extract items to concatenate in a print statement
 for (a, b, c) in zip(candidates, vc, vp): 
-    mainresult = print(a + ": ","{:.3%}".format(c), "(" + str(b) + ")")
-print(mainresult)
+    nd.update({b:a})
+    #print(nd)
+    print(a + ": ","{:.3%}".format(c), "(" + str(b) + ")")
+
 print("------------------")
 
-# I know Khan is the winner from the counts dictionary and is first item in candidates list so I'll just set the range to 1 in the loop below.
-for x in range(1): 
-    print("Winner: " + candidates[x])
-print("------------------")
+# Highest candidate's name (hc) is the value whose key is the highest count in the new dictionary (nd).
+hc = max(counts.values())
+print("Winner: " + nd[hc])
 
-# Write results to .txt file in Analysis folder
+
+#Write results to .txt file in Analysis folder
 file1 = open("Analysis\output.txt","a") 
 file1.truncate(0)
 file1.write("Election Results")
@@ -74,11 +80,15 @@ file1.write("\n")
 file1.write("Total Votes: " + str(votes))
 file1.write("\n")
 file1.write("-------------------")
-file1.write(mainresult)
 file1.write("\n")
+
+# Looping through the candidates, vote oercent and vote count lists to get be able to print out each candidates name, vote percent and vote count.
+for i in range(len(candidates)):
+    file1.write(str(candidates[i]) + ": " + "{:.3%}".format(vp[i]) + "(" + str(vc[i]) + ")")
+    file1.write("\n")
 file1.write("-------------------")
 file1.write("\n")
-file1.write("Winner: " + candidates[x])
+file1.write("Winner: " + nd[hc])
 file1.write("\n")
 file1.write("-------------------")
 file1.close()      
